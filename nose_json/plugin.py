@@ -102,7 +102,10 @@ class JsonReportPlugin(Plugin):
 
     def addFailure(self, test, err, capt=None, tb_info=None):
         taken = self._get_time_taken()
-        tb = ''.join(traceback.format_exception(*err))
+        if issubclass(type(err), Exception):
+            tb = ''.join(traceback.format_exception(*err))
+        else:
+            tb = err
         self.stats['failures'] += 1
         id = test.id()
         self.results.append({
