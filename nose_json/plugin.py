@@ -85,7 +85,10 @@ class JsonReportPlugin(Plugin):
         else:
             type = 'error'
             self.stats['errors'] += 1
-        tb = ''.join(traceback.format_exception(*err))
+        if issubclass(type(err), Exception):
+            tb = ''.join(traceback.format_exception(*err))
+        else:
+            tb = err
         id = test.id()
         self.results.append({
             'classname': ':'.join(id_split(id)[0].rsplit('.', 1)),
